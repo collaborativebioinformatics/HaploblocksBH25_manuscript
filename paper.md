@@ -134,6 +134,7 @@ We ran the pipeline as described in the Methods section for chromosome 6 data fr
 ![Fig. 2. Distribution of haploblock lengths in chromosome 6.](./figures/haploblock_lengths.png)\
 **Fig. 2.** Distribution of haploblock lengths in chromosome 6.
 
+
 We generated haploblock phased sequences with common variants (minimum allele frequency > 0.05; coverage mode 2 to eliminate artifact fragments i.e., short sequences) for the following genomic regions in chromosome 6: five randomly selected haploblocks, haploblock overlapping with TNFa (chr6:31,575,565-31,578,336) and haploblock overlapping with HLA-A (chr6:29,941,260-29,945,884). We performed sequence clustering separately for three populations: Han Chinese in Beijing (CHB), British in England and Scotland (GBR) and Puerto Rican in Puerto Rico (PUR), and then for the full set of 26 populations from the 1000 Genomes Project. We compared the number of clusters for two genomic regions, TNFa and HLA-A, highlighting the number of clusters with a single representative (**Table 1**).
 
 **Table 1.** Number of identified clusters for three representative populations (CHB: Han Chinese in Beijing, GBR: British in England and Scotland, PUR: Puerto Rican in Puerto Rico) and for the full 1000 Genomes dataset (26 populations). The numbers of clusters with only single representatives are in parentheses.
@@ -143,20 +144,23 @@ We generated haploblock phased sequences with common variants (minimum allele fr
 | TNFa   | 5       | 6 (2)  | 11 (2)  | 140 (479)      |
 | HLA-A  | 10 (21) | 8 (14) | 12 (10) | 47 (1604)      |
 
+
 For TNFa, the number of clusters is smaller within individual populations (5 in CHB, 6 in GBR and 11 in PUR) but increases to 140 when 26 populations are analyzed together.  By contrast, for HLA-A, although the number of clusters within single populations is comparable to TNFa (10 in CHB, 8 in GBR and 12 in PUR), the number of clusters across 26 populations is lower (47). These results serve as a proof of concept, showing that sequence clustering within and across haploblocks can capture differences in population structure.
 
 In addition, we performed performance tests on a haploblock overlapping with TNFa using all samples (**Table 2**).
 
 **Table 2.** Runtime of individual pipeline steps for a single haploblock (TNFa) with the comparison of Hackathon CPU and Optimized CPU implementations. The benchmark was performed on an AWS Linux–based system with 128 CPU cores, 480 GB of memory and 1 NVIDIA A100 GPU with 80 GB of VRAM (instance type: hyperstack_A100_80Gx4).
 
-| Step | Hackathon (CPU) [s] | Optimized (CPU) [s] | CPU speed-up |
-|------|--------------------|--------------------|--------------|
-| 1    | 1.27               | 1.93               | 0.66x        |
-| 2    | 591.96             | 10.13              | 58.4x        |
-| 3    | 189.86             | 5.83               | 32.6x        |
-| 4    | 346.26             | 243.14             | 1.42x        |
-| 5    | 0.21               | 1.96               | 0.11x        |
+| Step | Description                     | Hackathon (CPU) [s] | Optimized (CPU) [s] | CPU speed-up |
+|------|---------------------------------|--------------------|--------------------|--------------|
+| 1    | Generate haploblock boundaries  | 1.27               | 1.93               | 0.66×        |
+| 2    | Generate haploblock phased sequences | 591.96         | 10.13              | 58.4×        |
+| 3    | Merge fasta                     | 189.86             | 5.83               | 32.6×        |
+| 4    | Cluster haploblock sequences    | 346.26             | 243.14             | 1.42×        |
+| 5    | Generate genomic hashes         | 0.21               | 1.96               | 0.11×        |
 
+
+Across the five steps of the pipeline, most operations were dominated by file parsing, genomic interval extraction and sequence-level transformations, which are inherently sequential or I/O-bound and therefore well suited for CPU-based parallelization. Steps 1–3 involve recombination map parsing, haploblock-specific variant application and FASTA generation. Step 4 relies on MMseqs2, with its performance determined by internal optimizations. In contrast, step 5, which assigns binary hashes to haploblocks, clusters and individual haplotypes, consists of numerically simple but highly repetitive operations and was the only stage where GPU acceleration provided measurable benefit. As a result, the pipeline was optimized primarily for CPU execution, with GPU resources used selectively where they aligned with the computational demand of the task.
 
 
 # Conclusions
@@ -166,7 +170,13 @@ Predicting effective treatments for complex phenotypic outcomes based on genotyp
 
 # Future directions
 
+The pipeline is currently dominated by I/O, data parsing, and sequential preprocessing steps, which inherently limit GPU utilization. With a redesigned workflow that minimizes CPU–GPU data transfer, increases computational density, and restructures earlier stages around GPU-native data representations, substantial acceleration beyond the hash-based computations is expected to become achievable. Future work will therefore focus on deeper GPU integration across the pipeline to fully leverage modern accelerator hardware.
 
+Our ultimate objective is to perform high-resolution mapping of haploblock clusters within and across European and international biobanks, thereby providing a foundation for a systematic nomenclature of segregated genomic backgrounds and enabling the assessment of their contribution to clinical outcomes. We aim to perform a whole-genome analysis and examine the number of clusters for each haploblock, and analyze manually all haploblocks that show a significantly divergent number of clusters to understand their underlying structure.
+
+Beyond linear genotype-phenotype relationships, we plan to generate etiological phenotype subnetworks to capture complex biological interactions. For example, we will replace the current linear approach with XGBoost (eXtreme Gradient Boosting), a machine learning method capable of capturing nonlinear interactions between haploblock clusters. Future improvements will also address human diploidy and incorporate variable penetrance variants within the model to improve predictive accuracy. In addition, we will assess the differential impact of non-synonymous versus regulatory SNPs within the model.
+
+Another critical advancement will be correlating haploblocks with chromatin domains and integrating ATAC-seq data to model realistic cell-type-specific relationships, such as the interaction between B-cells and general autoimmunity. We plan to also incorporate 3D genome architecture by generating matrices of long-range chromatin loops to identify enhancer regions located in distinct haploblocks, thereby providing a holistic view of gene regulation in disease risk.
 
 
 # Data and software availability
