@@ -52,9 +52,10 @@ affiliations:
 date: 15 December 2025
 bibliography: paper.bib
 authors_short: Kubica J. \emph{et al.}
-biohackathon_name: Elixir BioHackathon 2025
+biohackathon_name: Elixir BioHackathon
 biohackathon_url: https://biohackathon-europe.org/
 biohackathon_location: Berlin, Germany
+event: Elixir BioHackathon Europe 2025
 group: Project 4 Beyond beacons Establishing genomic background in European and international biobanks
 git_url: https://github.com/collaborativebioinformatics/HaploblocksBH25_manuscript
 ---
