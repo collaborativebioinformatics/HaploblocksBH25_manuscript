@@ -2,7 +2,7 @@
 title: 'Decoding Complex Genotype-Phenotype Interactions by Discretizing the Genome'
 tags:
   - BioHackathon
-  - Genomics medicine
+  - genomics medicine
   - predictive phenomics
   - genotype-to-phenotype mapping
   - haploblocks
@@ -10,6 +10,7 @@ tags:
   - SNPs
   - SVs
   - WGS
+
 authors:
   - name: Jędrzej Kubica
     orcid: 0000-0001-7037-3900
@@ -51,7 +52,10 @@ affiliations:
 date: 15 December 2025
 bibliography: paper.bib
 authors_short: Kubica J. \emph{et al.}
-event: Elixir BioHackathon 2025
+biohackathon_name: Elixir BioHackathon 2025
+biohackathon_url: https://biohackathon-europe.org/
+biohackathon_location: Berlin, Germany
+group: Project 4: Beyond beacons: Establishing genomic background in European and international biobanks
 git_url: https://github.com/collaborativebioinformatics/HaploblocksBH25_manuscript
 ---
 
@@ -129,28 +133,39 @@ We ran the pipeline as described in the Methods section for chromosome 6 data fr
 ![Fig. 2. Distribution of haploblock lengths in chromosome 6.](./figures/haploblock_lengths.png)\
 **Fig. 2.** Distribution of haploblock lengths in chromosome 6.
 
-We generated haploblock phased sequences with common variants (minimum allele frequency > 0.05; coverage mode 2 to eliminate artifact fragments i.e., short sequences) for the following genomic regions in chromosome 6: five randomly selected haploblocks, haploblock overlapping with TNFa (chr6:31,575,565-31,578,336) and haploblock overlapping with HLA-A (chr6:29,941,260-29,945,884). We performed sequence clustering separately for three populations: Han Chinese in Beijing (CHB), British in England and Scotland (GBR) and Puerto Rican in Puerto Rico (PUR), and then for the full set of 26 populations from the 1000 Genomes Project. We compared the number of clusters for two genomic regions, TNFa and HLA-A (**Table 1**).
+We generated haploblock phased sequences with common variants (minimum allele frequency > 0.05; coverage mode 2 to eliminate artifact fragments i.e., short sequences) for the following genomic regions in chromosome 6: five randomly selected haploblocks, haploblock overlapping with TNFa (chr6:31,575,565-31,578,336) and haploblock overlapping with HLA-A (chr6:29,941,260-29,945,884). We performed sequence clustering separately for three populations: Han Chinese in Beijing (CHB), British in England and Scotland (GBR) and Puerto Rican in Puerto Rico (PUR), and then for the full set of 26 populations from the 1000 Genomes Project. We compared the number of clusters for two genomic regions, TNFa and HLA-A, highlighting the number of clusters with a single representative (**Table 1**).
 
-**Table 1.** Number of identified clusters for three representative populations (CHB: Han Chinese in Beijing, GBR: British in England and Scotland, PUR: Puerto Rican in Puerto Rico) and for the full 1000 Genomes dataset (26 populations).
+**Table 1.** Number of identified clusters for three representative populations (CHB: Han Chinese in Beijing, GBR: British in England and Scotland, PUR: Puerto Rican in Puerto Rico) and for the full 1000 Genomes dataset (26 populations). The numbers of clusters with only single representatives are in parentheses.
 
-| Region | CHB | GBR | PUR | 26 populations |
-|--------|-----|-----|-----|----------------|
-| TNFα   | 5   | 6   | 11  | 140            |
-| HLA-A  | 10  | 8   | 12  | 47             |
+| Region | CHB     | GBR    | PUR     | 26 populations |
+|--------|---------|--------|---------|----------------|
+| TNFα   | 5       | 6 (2)  | 11 (2)  | 140 (479)      |
+| HLA-A  | 10 (21) | 8 (14) | 12 (10) | 47 (1604)      |
 
-For TNFa, the number of clusters is smaller within individual populations (5 in CHB, 6 in GBR and 11 in PUR) but increases to 140 when 26 populations are analyzed together. By contrast, for HLA-A, although the number of clusters within single populations is comparable to TNFa (10 in CHB, 8 in GBR and 12 in PUR), the number of clusters across 26 populations is lower (47). These results serve as a proof of concept, showing that sequence clustering within and across haploblocks can capture differences in population structure.
+For TNFa, the number of clusters is smaller within individual populations (5 in CHB, 6 in GBR and 11 in PUR) but increases to 140 when 26 populations are analyzed together.  By contrast, for HLA-A, although the number of clusters within single populations is comparable to TNFa (10 in CHB, 8 in GBR and 12 in PUR), the number of clusters across 26 populations is lower (47). These results serve as a proof of concept, showing that sequence clustering within and across haploblocks can capture differences in population structure.
 
 In addition, we performed performance tests on a haploblock overlapping with TNFa using all samples (**Table 2**).
 
-Performance + GPU
+**Table 2.** Runtime of individual pipeline steps for a single haploblock (TNFa) with the comparison of Hackathon CPU and Optimized CPU implementations. The benchmark was performed on an AWS Linux–based system with 128 CPU cores, 480 GB of memory and 1 NVIDIA A100 GPU with 80 GB of VRAM (instance type: hyperstack_A100_80Gx4).
+
+| Step | Hackathon (CPU) [s] | Optimized (CPU) [s] | CPU speed-up |
+|------|--------------------|--------------------|--------------|
+| 1    | 1.27               | 1.93               | 0.66x        |
+| 2    | 591.96             | 10.13              | 58.4x        |
+| 3    | 189.86             | 5.83               | 32.6x        |
+| 4    | 346.26             | 243.14             | 1.42x        |
+| 5    | 0.21               | 1.96               | 0.11x        |
 
 
-# Conclusion
+
+# Conclusions
 
 Predicting effective treatments for complex phenotypic outcomes based on genotype has always been the objective of genomics research. To date, however, translating biological insights into clinical strategies still constitutes a challenge [@Timpson2018-oc; @Visscher2021-ol]. In this study, we introduce a new methodological framework for genotype-phenotype mapping based on genomic hashes. We tested our method by clustering sets of variants within haploblocks of chromosome 6. Our results highlight the potential of hash-based haploblock clustering as a fast and scalable computational approach for deconvoluting complex genotype-phenotype relationships. While this study is limited to chromosome 6 and serves as a proof of concept, this framework can be extended to other genomic regions and larger genotype and phenotype datasets to explore genotype-phenotype associations.
 
 
 # Future directions
+
+
 
 
 # Data and software availability
