@@ -163,7 +163,7 @@ In addition, we performed performance tests on a haploblock overlapping with TNF
 
 
 
-Across the five steps of the pipeline, most operations were dominated by file parsing, genomic interval extraction and sequence-level transformations, which are inherently sequential or I/O-bound and therefore well suited for CPU-based parallelization. Steps 1–3 involve recombination map parsing, haploblock-specific variant application and FASTA generation. Step 4 relies on MMseqs2, with its performance determined by internal optimizations. In contrast, step 5, which assigns binary hashes to haploblocks, clusters and individual haplotypes, consists of numerically simple but highly repetitive operations and was the only stage where GPU acceleration provided measurable benefit. As a result, the pipeline was optimized primarily for CPU execution, with GPU resources used selectively when they aligned with the computational demand of the task.
+Across the five steps of the pipeline, most operations were dominated by file parsing, genomic interval extraction and sequence-level transformations, which are inherently sequential or I/O-bound and therefore well suited for CPU-based parallelization. Steps 1–3 involve recombination map parsing, haploblock-specific variant application and FASTA generation. Step 4 relies on MMSeqs2, with its performance determined by internal optimizations. In contrast, step 5, which assigns binary hashes to haploblocks, clusters and individual haplotypes, consists of numerically simple but highly repetitive operations and was the only stage where GPU acceleration provided measurable benefit. As a result, the pipeline was optimized primarily for CPU execution, with GPU resources used selectively when they aligned with the computational demand of the task.
 
 
 # Conclusions
@@ -190,7 +190,9 @@ The reference sequence for chromosome 6 (GRCh38) is available at: https://hgdown
 
 The genetic map with genome-wide recombination rates from Halldorsson et al., 2019 is available at: https://www.science.org/doi/10.1126/science.aau1043
 
-Samtools, BCFtools and HTSlib are available under the CC BY-NC-ND 4.0 license at: https://www.htslib.org/. MMSeqs2 is available under the MIT license at: https://github.com/soedinglab/MMseqs2
+Samtools, BCFtools and HTSlib are available under the CC BY-NC-ND 4.0 license at: https://www.htslib.org/
+
+MMSeqs2 is available under the MIT license at: https://github.com/soedinglab/MMseqs2
 
 Our software is available under the MIT license on GitHub (https://github.com/collaborativebioinformatics/Haploblock_Clusters_ElixirBH25).
 
