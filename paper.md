@@ -155,11 +155,11 @@ In addition, we performed performance tests on a haploblock overlapping with TNF
 
 | Step | Description                  | Hackathon [s] | Optimized [s] | Speed-up |
 |------|------------------------------|--------------------|--------------------|--------------|
-| 1    | Haploblock<br>boundaries     | 1.27               | 1.93               | 0.66×        |
-| 2    | Haploblock phased<br>sequences | 591.96           | 10.13              | 58.4×        |
-| 3    | Merge<br>fasta               | 189.86             | 5.83               | 32.6×        |
-| 4    | Cluster haploblock<br>sequences | 346.26          | 243.14             | 1.42×        |
-| 5    | Generate genomic<br>hashes   | 0.21               | 1.96               | 0.11×        |
+| 1    | Haploblock boundaries     | 1.27               | 1.93               | 0.66×        |
+| 2    | Haploblock phased sequences | 591.96           | 10.13              | 58.4×        |
+| 3    | Merge fasta               | 189.86             | 5.83               | 32.6×        |
+| 4    | Cluster haploblock sequences | 346.26          | 243.14             | 1.42×        |
+| 5    | Generate genomic hashes   | 0.21               | 1.96               | 0.11×        |
 
 
 
