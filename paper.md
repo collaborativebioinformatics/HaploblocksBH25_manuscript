@@ -140,7 +140,7 @@ We generated haploblock phased sequences with common variants (minimum allele fr
 
 | Region | CHB     | GBR    | PUR     | 26 populations |
 |--------|---------|--------|---------|----------------|
-| TNFα   | 5       | 6 (2)  | 11 (2)  | 140 (479)      |
+| TNFa   | 5       | 6 (2)  | 11 (2)  | 140 (479)      |
 | HLA-A  | 10 (21) | 8 (14) | 12 (10) | 47 (1604)      |
 
 For TNFa, the number of clusters is smaller within individual populations (5 in CHB, 6 in GBR and 11 in PUR) but increases to 140 when 26 populations are analyzed together.  By contrast, for HLA-A, although the number of clusters within single populations is comparable to TNFa (10 in CHB, 8 in GBR and 12 in PUR), the number of clusters across 26 populations is lower (47). These results serve as a proof of concept, showing that sequence clustering within and across haploblocks can capture differences in population structure.
